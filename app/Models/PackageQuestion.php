@@ -22,6 +22,7 @@ class PackageQuestion extends Model
         'number',
         'header',
         'text',
+        'choices',
     ];
 
     /**

@@ -76,6 +76,54 @@
                         </div>
                     </div>
 
+                    <div class="card">
+                        <div class="card-header">
+                            Pilihan Jawaban
+                        </div>
+
+                        <div class="card-body">
+                            @php
+                                $options = ['A', 'B', 'C', 'D', 'E'];
+                            @endphp
+
+                            @foreach ($options as $option)
+                                @php
+                                    $key = 'option_' . strtolower($option);
+                                    $choices = $question?->choices ?? [];
+                                    $choices = json_decode($choices, true);
+                                    $choicesColumn = array_column($choices, 'number');
+                                    // to lower case
+                                    $index = array_search(strtolower($option), array_map('strtolower', $choicesColumn));
+
+                                    $choice = null;
+                                    if ($index !== false) {
+                                        $choice = $choices[$index] ?? null;
+                                    }
+                                @endphp
+                                <div class="row mb-3">
+                                    <div class="col-1">
+                                        <label for="{{ $key }}"
+                                            class="col-form-label text-md-right">{{ $option }}</label>
+                                    </div>
+
+                                    <div class="col-11">
+                                        <input id="{{ $key }}" type="text"
+                                            value="{{ $choice['text'] ?? null }}"
+                                            class="form-control @error($key) is-invalid @enderror"
+                                            name="{{ $key }}" value="{{ old($key, $question?->{$key}) }}"
+                                            autocomplete="{{ $key }}" autofocus>
+
+                                        @error($key)
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="form-group row mb-0">
                         <div class="col-12 d-flex justify-content-end gap-3">
                             <a href="{{ route('questions.index', [$packageId]) }}" class="btn btn-white">

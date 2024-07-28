@@ -49,12 +49,23 @@ class PackageQuestionController extends Controller
             'number' => 'required|integer|unique:package_questions,number,NULL,id,package_id,' . $packageId,
         ]);
 
+        $choices = $request->only([
+            'option_a', 'option_b', 'option_c', 'option_d', 'option_e'
+        ]);
+
+        $choices = array_filter($choices, fn ($choice) => $choice !== null);
+        $choices = array_map(fn ($choice, $key) => [
+            'number' => strtoupper(str_replace('option_', '', $key)),
+            'text' => $choice
+        ], $choices, array_keys($choices));
+
         $data['package_id'] = $packageId;
         $data['text'] = $data['question'];
+        $data['choices'] = json_encode($choices);
 
         PackageQuestion::create($data);
 
-        return redirect()->route('questions.index', ['packageId' => $packageId])
+        return redirect()->route('questions.index', [$packageId])
             ->with('success', 'Berhasil menambahkan pertanyaan.');
     }
 
@@ -90,8 +101,19 @@ class PackageQuestionController extends Controller
             'number' => 'required|integer|unique:package_questions,number,' . $id . ',id,package_id,' . $packageId,
         ]);
 
+        $choices = $request->only([
+            'option_a', 'option_b', 'option_c', 'option_d', 'option_e'
+        ]);
+
+        $choices = array_filter($choices, fn ($choice) => $choice !== null);
+        $choices = array_map(fn ($choice, $key) => [
+            'number' => strtoupper(str_replace('option_', '', $key)),
+            'text' => $choice
+        ], $choices, array_keys($choices));
+
         $data['package_id'] = $packageId;
         $data['text'] = $data['question'];
+        $data['choices'] = json_encode($choices);
 
         PackageQuestion::findOrFail((int) $id)->update($data);
 
