@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamSchedule;
+use App\Models\Package;
 use Illuminate\Http\Request;
 
 class ExamScheduleController extends Controller
@@ -34,7 +35,8 @@ class ExamScheduleController extends Controller
      */
     public function create()
     {
-        //
+        $packages = Package::pluck('name', 'id')->toArray();
+        return view('exam.form')->with('packages', $packages);
     }
 
     /**
@@ -42,7 +44,9 @@ class ExamScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ExamSchedule::create($request->all());
+
+        return redirect()->route('exams.index')->with('success', 'Berhasil menambahkan data jadwal ujian.');
     }
 
     /**
@@ -58,7 +62,9 @@ class ExamScheduleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $exam = ExamSchedule::findOrFail($id);
+        $packages = Package::pluck('name', 'id')->toArray();
+        return view('exam.form')->with('exam', $exam)->with('packages', $packages);
     }
 
     /**
@@ -66,7 +72,9 @@ class ExamScheduleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        ExamSchedule::findOrFail($id)->update($request->all());
+
+        return redirect()->route('exams.index')->with('success', 'Berhasil memperbarui data jadwal ujian.');
     }
 
     /**
@@ -74,6 +82,8 @@ class ExamScheduleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        ExamSchedule::findOrFail($id)->delete();
+
+        return redirect()->route('exams.index')->with('success', 'Berhasil menghapus data jadwal ujian.');
     }
 }
