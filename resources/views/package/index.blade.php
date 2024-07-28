@@ -40,7 +40,7 @@
                                 <th>Nama Paket Soal</th>
                                 <th>Terakhir Diubah</th>
                                 <th>Dibuat Oleh</th>
-                                <th style="width: 14%">Aksi</th>
+                                <th style="width: 20%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,10 +55,13 @@
                                         {{ $package->updatedBy?->name }}
                                     </td>
                                     <td>
+                                        <button class="btn btn-light"
+                                            onclick="window.location.href='{{ route('packages.show', [$package->id]) }}'">
+                                            <span class="far fa-eye"></span>
+                                        </button>
                                         <a href="{{ route('packages.edit', [$package->id]) }}" class="btn btn-warning"><span
                                                 class="far fa-edit"></span>
                                         </a>
-
                                         <form action="{{ route('packages.destroy', [$package->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf
