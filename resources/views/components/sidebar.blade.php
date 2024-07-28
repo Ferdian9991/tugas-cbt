@@ -4,13 +4,12 @@
             <div class="sidebar-brand">
                 <a href="">Menu Utama</a>
             </div>
-            <div class="sidebar-brand sidebar-brand-sm">
+            {{-- <div class="sidebar-brand sidebar-brand-sm">
                 <a href="">Menu Utama</a>
-            </div>
+            </div> --}}
             <ul class="sidebar-menu">
-                <li class="menu-header">Dashboard</li>
-                <li class="{{ Request::is('home') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ url('home') }}"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                <li class="{{ Request::is('packages') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('packages') }}"><i class="fas fa-list"></i><span>Paket Soal</span></a>
                 </li>
                 <!-- profile ganti password -->
                 <li class="menu-header">Profile</li>

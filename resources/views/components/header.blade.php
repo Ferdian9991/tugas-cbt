@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg main-navbar">
         <ul class="navbar-nav ml-auto grid" style="width: 100%">
             <li>
-                <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg">
+                <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg text-black">
                     <i class="fas fa-bars"></i>
                 </a>
             </li>
