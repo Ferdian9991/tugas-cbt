@@ -53,7 +53,7 @@
                                         {{ $admin->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $admin->updatedBy?->name }}
+                                        {{ $admin->createdBy?->name }}
                                     </td>
                                     <td>
                                         <a href="{{ route('admins.edit', [$admin->id]) }}" class="btn btn-warning"><span

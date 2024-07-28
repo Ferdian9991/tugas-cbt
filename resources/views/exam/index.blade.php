@@ -53,7 +53,7 @@
                                         {{ $exam->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $exam->updatedBy?->name }}
+                                        {{ $exam->createdBy?->name }}
                                     </td>
                                     <td>
                                         <a href="{{ route('exams.edit', [$exam->id]) }}" class="btn btn-warning"><span

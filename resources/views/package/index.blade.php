@@ -53,7 +53,7 @@
                                         {{ $package->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $package->updatedBy?->name }}
+                                        {{ $package->createdBy?->name }}
                                     </td>
                                     <td>
                                         <button class="btn btn-light"

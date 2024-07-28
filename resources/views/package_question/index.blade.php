@@ -56,7 +56,7 @@
                                         {{ $question->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $question->updatedBy?->name }}
+                                        {{ $question->createdBy?->name }}
                                     </td>
                                     <td>
                                         <a href="{{ route('questions.edit', [$package->id, $question->id]) }}"

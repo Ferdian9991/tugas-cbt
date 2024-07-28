@@ -53,7 +53,7 @@
                                         {{ $participant->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $participant->updatedBy?->name }}
+                                        {{ $participant->createdBy?->name }}
                                     </td>
                                     <td>
                                         <a href="{{ route('participants.edit', [$participant->id]) }}" class="btn btn-warning"><span
