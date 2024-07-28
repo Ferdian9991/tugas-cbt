@@ -33,17 +33,29 @@ class PackageQuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $packageId)
     {
-        //
+        return view('package_question.form')->with('packageId', $packageId);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $packageId)
     {
-        //
+        $data = $request->validate([
+            'header' => 'required|string',
+            'question' => 'required|string',
+            'number' => 'required|integer|unique:package_questions,number,NULL,id,package_id,' . $packageId,
+        ]);
+
+        $data['package_id'] = $packageId;
+        $data['text'] = $data['question'];
+
+        PackageQuestion::create($data);
+
+        return redirect()->route('questions.index', ['packageId' => $packageId])
+            ->with('success', 'Berhasil menambahkan pertanyaan.');
     }
 
     /**
@@ -57,17 +69,34 @@ class PackageQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $packageId, string $id)
     {
-        //
+        $question = PackageQuestion::findOrFail((int) $id);
+        $question->question = $question->text;
+
+        return view('package_question.form')
+            ->with('packageId', $packageId)
+            ->with('question', $question);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $packageId, string $id)
     {
-        //
+        $data = $request->validate([
+            'header' => 'required|string',
+            'question' => 'required|string',
+            'number' => 'required|integer|unique:package_questions,number,' . $id . ',id,package_id,' . $packageId,
+        ]);
+
+        $data['package_id'] = $packageId;
+        $data['text'] = $data['question'];
+
+        PackageQuestion::findOrFail((int) $id)->update($data);
+
+        return redirect()->route('questions.index', [$packageId])
+            ->with('success', 'Berhasil mengubah pertanyaan.');
     }
 
     /**
@@ -75,6 +104,9 @@ class PackageQuestionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        PackageQuestion::findOrFail((int) $id)->delete();
+
+        return redirect()->back()
+            ->with('success', 'Berhasil menghapus pertanyaan.');
     }
 }

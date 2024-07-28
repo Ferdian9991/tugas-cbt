@@ -20,7 +20,7 @@
                         <a href="{{ route('packages.index') }}" class="btn btn-light float-right">Kembali</a>
                     </div>
                     <div>
-                        <a href="{{ route('packages.create') }}" class="btn btn-primary float-right">Tambah Data</a>
+                        <a href="{{ route('questions.create', [$package->id]) }}" class="btn btn-primary float-right">Tambah Data</a>
                     </div>
                 </div>
             </div>
@@ -59,10 +59,10 @@
                                         {{ $question->updatedBy?->name }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('packages.edit', [$question->id]) }}"
+                                        <a href="{{ route('questions.edit', [$package->id, $question->id]) }}"
                                             class="btn btn-warning"><span class="far fa-edit"></span>
                                         </a>
-                                        <form action="{{ route('packages.destroy', [$question->id]) }}" method="POST"
+                                        <form action="{{ route('questions.destroy', [$package->id, $question->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
