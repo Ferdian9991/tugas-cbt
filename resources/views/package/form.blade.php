@@ -3,6 +3,8 @@
 @endphp
 @extends('layouts.app')
 
+@section('title', @empty($package) ? 'Tambah Paket Soal' : 'Edit Paket Soal')
+
 @section('content')
     <div class="main-content">
         <div class="row justify-content-center">

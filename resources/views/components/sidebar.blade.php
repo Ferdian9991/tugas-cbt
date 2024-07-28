@@ -11,6 +11,11 @@
                 <li class="{{ Request::is('packages*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('packages') }}"><i class="fas fa-list"></i><span>Paket Soal</span></a>
                 </li>
+
+                <li class="{{ Request::is('exams*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('exams') }}"><i class="fas fa-calendar"></i><span>Jadwal Ujian</span></a>
+                </li>
+
                 <!-- profile ganti password -->
                 <li class="menu-header">Profile</li>
                 <li class="{{ Request::is('profile/edit') ? 'active' : '' }}">

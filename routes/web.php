@@ -11,6 +11,8 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('packages', App\Http\Controllers\PackageController::class);
+    Route::resource('exams', App\Http\Controllers\ExamScheduleController::class);
+
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/change-password', [ProfileController::class, 'changepassword'])->name('profile.change-password');
@@ -20,5 +22,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/hakakses/edit/{id}', [App\Http\Controllers\HakaksesController::class, 'edit'])->name('hakakses.edit')->middleware('superadmin');
     Route::put('/hakakses/update/{id}', [App\Http\Controllers\HakaksesController::class, 'update'])->name('hakakses.update')->middleware('superadmin');
     Route::delete('/hakakses/delete/{id}', [App\Http\Controllers\HakaksesController::class, 'destroy'])->name('hakakses.delete')->middleware('superadmin');
-
 });
