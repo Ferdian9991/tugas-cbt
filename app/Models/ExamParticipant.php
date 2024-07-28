@@ -36,4 +36,9 @@ class ExamParticipant extends Model
     {
         return $this->belongsTo(ExamSchedule::class, 'exam_schedules_id');
     }
+
+    public function answers()
+    {
+        return $this->hasMany(ParticipantAnswer::class, 'participant_id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ExamParticipant;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExamFrontController extends Controller
 {
@@ -70,15 +71,18 @@ class ExamFrontController extends Controller
             $availableTime = $currentTime->diffInMinutes($examEndAt);
         }
 
-        $questions = $examInfo->package->questions;
+        $package = $examInfo->package;
+        $questions = $package->questions;
+        $answers = $exam->answers->pluck('answer', 'package_question_id');
 
         return view('exam-front.show')
             ->with('exam', $exam)
             ->with('examInfo', $examInfo)
             ->with('availableTime', $availableTime)
-            ->with('questions', $questions);
+            ->with('questions', $questions)
+            ->with('answers', $answers)
+            ->with('package', $package);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -89,11 +93,92 @@ class ExamFrontController extends Controller
             ->where('exam_schedules_id', $id)
             ->first();
 
-        $exam->update([
-            'started_at' => now(),
-            'is_started' => true,
-        ]);
+        if (!$exam) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak ditemukan');
+        }
+
+        if ($exam->is_finished) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian sudah selesai');
+        }
+
+        if (!$exam->is_started) {
+            $exam->update([
+                'started_at' => now(),
+                'is_started' => true,
+            ]);
+        }
 
         return redirect()->route('exam-front.show', $id);
+    }
+
+    public function updateParticipantAnswer(Request $request, string $id)
+    {
+        $exam = ExamParticipant::where('user_id', auth()->user()->id)
+            ->where('exam_schedules_id', $id)
+            ->first();
+
+        if (!$exam) {
+            return response()->json([
+                'message' => 'Ujian tidak ditemukan'
+            ], 404);
+        }
+
+        if ($exam->is_finished) {
+            return response()->json([
+                'message' => 'Ujian sudah selesai'
+            ], 403);
+        }
+
+        try {
+            $data = $request->validate([
+                'question_id' => 'required|exists:package_questions,id',
+                'answer' => 'required|in:A,B,C,D,E',
+            ]);
+
+            $exam->answers()->updateOrCreate(
+                ['package_question_id' => $data['question_id'], 'participant_id' => $exam->id],
+                ['answer' => $data['answer']]
+            );
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Gagal menyimpan jawaban'
+            ], 422);
+        }
+
+        return response()->json([
+            'message' => 'Berhasil menyimpan jawaban'
+        ]);
+    }
+
+    public function submitExam(Request $request, string $id)
+    {
+        $exam = ExamParticipant::where('user_id', auth()->user()->id)
+            ->where('exam_schedules_id', $id)
+            ->first();
+
+        DB::beginTransaction();
+
+        $correctAnswer = 0;
+        $totalQuestion = $exam->examSchedule->package->questions->count();
+        foreach ($exam->answers as $item) {
+            $question = $item->packageQuestion;
+            $correctChoice = $question->correct_choice;
+
+            if ($item->answer === $correctChoice) {
+                $correctAnswer++;
+            }
+        }
+
+        $score = ($correctAnswer / $totalQuestion) * 100;
+
+        $exam->update([
+            'is_finished' => true,
+            'finished_at' => now(),
+            'score' => $score,
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('exam-front.index')->with('success', 'Ujian berhasil disubmit');
     }
 }

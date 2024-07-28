@@ -18,13 +18,20 @@
         </header>
         <main class="main-content">
             <div class="question-container">
-                @foreach ($questions as $question)
+                @php
+                    if ($package->is_random_question) {
+                        $questions = $questions->shuffle();
+                    } else {
+                        $questions = $questions->sortBy('number');
+                    }
+                @endphp
+                @foreach ($questions as $index => $question)
                     @php
                         $choices = json_decode($question->choices ?? '[]');
                     @endphp
                     <div class="question">
                         <div class="d-flex">
-                            <p style="margin-right: 8px; font-weight: bold">{{ $question->number }}. </p>
+                            <p style="margin-right: 8px; font-weight: bold">{{ $index + 1 }}. </p>
                             <div class="question-text">
                                 @if (!empty($question->header))
                                     <p style="font-weight: bold">{{ $question->header }}</p>
@@ -35,10 +42,20 @@
                                 @endif
                             </div>
                         </div>
+
+                        @php
+                            if ($package->is_random_choice) {
+                                $choices = collect($choices)->shuffle();
+                            }
+                        @endphp
                         @foreach ($choices as $choice)
+                            @php
+                                $answer = $answers[$question->id] ?? null;
+                            @endphp
                             <label>
                                 <input class="answer" value="{{ $choice?->number }}" type="radio"
-                                    name="q_num_{{ $question->number }}">
+                                    name="q_num_{{ $question->number }}" question_id="{{ $question->id }}"
+                                    {{ $answer === $choice?->number ? 'checked' : '' }}>
                                 {{ $choice?->text }}
                             </label>
                         @endforeach
@@ -55,7 +72,12 @@
                     <p>Durasi Ujian</p>
                     <p class="time"></p>
                 </div>
-                <button class="submit-button">Kumpulkan Jawaban</button>
+
+                <form action="{{ route('exam-front.submit', [$exam->id]) }}" method="POST">
+                    @csrf
+                    <button class="submit-button" onclick="return confirm('Apakah Anda yakin ingin mengumpulkan jawaban?')"
+                        type="submit">Kumpulkan Jawaban</button>
+                </form>
             </aside>
         </main>
     </div>
@@ -65,6 +87,31 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             startTimer();
+
+            const ajaxUrl = "{{ route('exam-front.answer', [$exam->id]) }}";
+            // Post answers to server
+            document.querySelectorAll('.answer').forEach((answer) => {
+                answer.addEventListener('change', async (e) => {
+                    const questionId = e.target.getAttribute('question_id');
+                    const answerValue = e.target.value;
+
+                    const response = await fetch(ajaxUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            question_id: questionId,
+                            answer: answerValue
+                        })
+                    });
+
+                    if (!response.ok) {
+                        alert('Gagal menyimpan jawaban');
+                    }
+                });
+            });
         });
 
         const startTimer = () => {

@@ -44,4 +44,10 @@ Route::middleware(['auth', 'peserta'])->group(function () {
     Route::resource('exam-front', App\Http\Controllers\ExamFrontController::class, [
         'only' => ['index', 'show', 'update'],
     ]);
+
+    Route::post('/exam-front/{id}/answer', [App\Http\Controllers\ExamFrontController::class, 'updateParticipantAnswer'])
+        ->name('exam-front.answer');
+
+    Route::post('/exam-front/{id}/submit', [App\Http\Controllers\ExamFrontController::class, 'submitExam'])
+        ->name('exam-front.submit');
 });
