@@ -30,11 +30,6 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::resource('participants', App\Http\Controllers\ParticipantController::class);
     Route::resource('admins', App\Http\Controllers\AdminController::class);
 
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/profile/change-password', [ProfileController::class, 'changepassword'])->name('profile.change-password');
-    Route::put('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
-
     Route::get('/hakakses', [App\Http\Controllers\HakaksesController::class, 'index'])->name('hakakses.index')->middleware('superadmin');
     Route::get('/hakakses/edit/{id}', [App\Http\Controllers\HakaksesController::class, 'edit'])->name('hakakses.edit')->middleware('superadmin');
     Route::put('/hakakses/update/{id}', [App\Http\Controllers\HakaksesController::class, 'update'])->name('hakakses.update')->middleware('superadmin');
@@ -54,4 +49,11 @@ Route::middleware(['auth', 'peserta'])->group(function () {
 
     Route::get('/exam-front/{id}/thanks', [App\Http\Controllers\ExamFrontController::class, 'thanks'])
         ->name('exam-front.thanks');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/change-password', [ProfileController::class, 'changepassword'])->name('profile.change-password');
+    Route::put('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
 });

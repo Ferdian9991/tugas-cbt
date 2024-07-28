@@ -27,24 +27,24 @@
                         <a class="nav-link" href="{{ url('admins') }}"><i class="fas fa-user-shield"></i><span>Admin
                                 Aplikasi</span></a>
                     </li>
-
-                    <!-- profile ganti password -->
-                    <li class="menu-header">Profile</li>
-                    <li class="{{ Request::is('profile/edit') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('profile/edit') }}"><i class="far fa-user"></i>
-                            <span>Profile</span></a>
-                    </li>
-                    <li class="{{ Request::is('profile/change-password') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('profile/change-password') }}"><i class="fas fa-key"></i>
-                            <span>Ganti
-                                Password</span></a>
-                    </li>
                 @else
                     <li class="{{ Request::is('exam-front*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('exam-front') }}"><i class="fas fa-calendar"></i><span>Jadwal
                                 Ujian</span></a>
                     </li>
                 @endif
+
+                <!-- profile ganti password -->
+                <li class="menu-header">Profile</li>
+                <li class="{{ Request::is('profile/edit') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('profile/edit') }}"><i class="far fa-user"></i>
+                        <span>Profile</span></a>
+                </li>
+                <li class="{{ Request::is('profile/change-password') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('profile/change-password') }}"><i class="fas fa-key"></i>
+                        <span>Ganti
+                            Password</span></a>
+                </li>
             </ul>
         </aside>
     </div>
