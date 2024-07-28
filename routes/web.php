@@ -15,6 +15,7 @@ Auth::routes();
 
 Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::resource('packages', App\Http\Controllers\PackageController::class);
+    Route::resource('packages/{id}/questions', App\Http\Controllers\PackageQuestionController::class);
     Route::resource('exams', App\Http\Controllers\ExamScheduleController::class);
     Route::resource('participants', App\Http\Controllers\ParticipantController::class);
     Route::resource('admins', App\Http\Controllers\AdminController::class);

@@ -1,21 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Paket Soal')
+@section('title', $package->name)
 
 @section('content')
     <div class="main-content">
-        <h4 class="mb-3">Paket Soal</h4>
+        <h4 class="mb-3">Paket ({{ $package->name }})</h4>
         <div class="row">
             <div class="col-12 row mb-5">
                 <div class="col-3">
                     <form action="{{ route('packages.index') }}" method="GET">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Cari paket soal">
+                            <input type="text" class="form-control" name="search" placeholder="Cari pertanyaan">
                             <button class="btn btn-primary" type="submit">Cari</button>
                         </div>
                     </form>
                 </div>
                 <div class="col-9 d-flex justify-content-end p-0">
+                    <div class="me-3">
+                        <a href="{{ route('packages.index') }}" class="btn btn-light float-right">Kembali</a>
+                    </div>
                     <div>
                         <a href="{{ route('packages.create') }}" class="btn btn-primary float-right">Tambah Data</a>
                     </div>
@@ -37,45 +40,41 @@
                     <table class="table table-bordered table-md">
                         <thead>
                             <tr>
-                                <th>Kode Paket Soal</th>
-                                <th>Nama Paket Soal</th>
+                                <th>Nomor Soal</th>
+                                <th>Pertanyaan</th>
                                 <th>Terakhir Diubah</th>
                                 <th>Dibuat Oleh</th>
-                                <th style="width: 20%">Aksi</th>
+                                <th style="width: 14%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($packages as $package)
+                            @foreach ($questions as $question)
                                 <tr>
-                                    <td>{{ $package->code }}</td>
-                                    <td>{{ $package->name }}</td>
+                                    <td>{{ $question->number }}</td>
+                                    <td>{{ $question->text }}</td>
                                     <td>
-                                        {{ $package->updated_at->format('d M Y') }}
+                                        {{ $question->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $package->updatedBy?->name }}
+                                        {{ $question->updatedBy?->name }}
                                     </td>
                                     <td>
-                                        <button class="btn btn-light"
-                                            onclick="window.location.href='{{ route('questions.index', [$package->id]) }}'">
-                                            <span class="far fa-eye"></span>
-                                        </button>
-                                        <a href="{{ route('packages.edit', [$package->id]) }}" class="btn btn-warning"><span
-                                                class="far fa-edit"></span>
+                                        <a href="{{ route('packages.edit', [$question->id]) }}"
+                                            class="btn btn-warning"><span class="far fa-edit"></span>
                                         </a>
-                                        <form action="{{ route('packages.destroy', [$package->id]) }}" method="POST"
+                                        <form action="{{ route('packages.destroy', [$question->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data {{ $package->name }}?')">
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data {{ $question->name }}?')">
                                                 <span class="far fa-trash-alt"></span>
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
-                            @if ($packages->isEmpty())
+                            @if ($questions->isEmpty())
                                 <tr>
                                     <td colspan="100" class="text-center">Tidak ada Data</td>
                                 </tr>

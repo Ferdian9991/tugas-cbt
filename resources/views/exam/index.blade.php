@@ -5,6 +5,7 @@
 @section('content')
     <div class="main-content">
         <div class="row">
+            <h4 class="mb-3">Jadwal ujian</h4>
             <div class="col-12 row mb-5">
                 <div class="col-3">
                     <form action="{{ route('exams.index') }}" method="GET">

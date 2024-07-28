@@ -60,7 +60,6 @@ class PackageController extends Controller
      */
     public function show(string $id)
     {
-        //
     }
 
     /**
