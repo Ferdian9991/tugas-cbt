@@ -24,6 +24,7 @@ class PackageQuestionController extends Controller
         $questions = PackageQuestion::where('package_id', (int) $packageId)
             ->filterPage($params['filter'])
             ->sortPage($params['sort'])
+            ->orderBy('number')
             ->paginate($params['limit'], ['*'], 'page', $params['page']);
 
         return view('package_question.index')->with('questions', $questions)
