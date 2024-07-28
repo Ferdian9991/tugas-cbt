@@ -4,14 +4,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('packages.index');
+    } else {
+        return redirect()->route('login');
+    }
 });
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::resource('packages', App\Http\Controllers\PackageController::class);
     Route::resource('exams', App\Http\Controllers\ExamScheduleController::class);
+    Route::resource('participants', App\Http\Controllers\ParticipantController::class);
 
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');

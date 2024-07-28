@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use App\Helpers\Blueprint;
+use App\Helpers\Schema;
 
 return new class extends Migration
 {
@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user');
+            $table->string('role')->default('admin')->comment('admin, user');
             $table->rememberToken();
-            $table->timestamps();
+            
+            $table->log(withSoftdelete: true, withUserLog: true);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

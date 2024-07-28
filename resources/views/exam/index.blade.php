@@ -9,7 +9,7 @@
                 <div class="col-3">
                     <form action="{{ route('exams.index') }}" method="GET">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Cari paket soal">
+                            <input type="text" class="form-control" name="search" placeholder="Cari jadwal ujian">
                             <button class="btn btn-primary" type="submit">Cari</button>
                         </div>
                     </form>
@@ -40,7 +40,7 @@
                                 <th>Nama Ujian</th>
                                 <th>Terakhir Diubah</th>
                                 <th>Dibuat Oleh</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 14%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@
                                         {{ $exam->updated_at->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $exam->createdBy?->name }}
+                                        {{ $exam->updatedBy?->name }}
                                     </td>
                                     <td>
                                         <a href="{{ route('exams.edit', [$exam->id]) }}" class="btn btn-warning"><span

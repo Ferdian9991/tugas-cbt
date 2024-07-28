@@ -6,7 +6,7 @@
 @section('title', @empty($exam) ? 'Tambah Jadwal Ujian' : 'Edit Jadwal Ujian')
 
 @section('content')
-    <div class="main-content">
+    <div class="main-content" style="padding-bottom: 14px">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h4 class="mb-3">{{ empty($exam) ? 'Tambah' : 'Edit' }} Jadwal Ujian</h4>

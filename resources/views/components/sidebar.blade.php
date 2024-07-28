@@ -16,6 +16,10 @@
                     <a class="nav-link" href="{{ url('exams') }}"><i class="fas fa-calendar"></i><span>Jadwal Ujian</span></a>
                 </li>
 
+                <li class="{{ Request::is('participants*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('participants') }}"><i class="fas fa-users"></i><span>Peserta Ujian</span></a>
+                </li>
+
                 <!-- profile ganti password -->
                 <li class="menu-header">Profile</li>
                 <li class="{{ Request::is('profile/edit') ? 'active' : '' }}">
