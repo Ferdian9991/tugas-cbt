@@ -49,6 +49,16 @@ class ExamFrontController extends Controller
             abort(404);
         }
 
+        $examInfo = $exam->examSchedule;
+
+        if ($examInfo->start_date > now()) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian belum dimulai');
+        }
+
+        if ($examInfo->end_date < now()) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian sudah selesai');
+        }
+
         if ($exam->is_finished) {
             return redirect()->route('exam-front.index')->with('error', 'Ujian sudah selesai');
         }
@@ -57,7 +67,6 @@ class ExamFrontController extends Controller
             return redirect()->route('exam-front.index')->with('error', 'Akses ditolak');
         }
 
-        $examInfo = $exam->examSchedule;
         $examDuration = $examInfo->duration;
         $examStartedAt = Carbon::parse($exam->started_at);
 
@@ -114,7 +123,7 @@ class ExamFrontController extends Controller
     public function updateParticipantAnswer(Request $request, string $id)
     {
         $exam = ExamParticipant::where('user_id', auth()->user()->id)
-            ->where('exam_schedules_id', $id)
+            ->where('id', $id)
             ->first();
 
         if (!$exam) {
@@ -153,7 +162,7 @@ class ExamFrontController extends Controller
     public function submitExam(Request $request, string $id)
     {
         $exam = ExamParticipant::where('user_id', auth()->user()->id)
-            ->where('exam_schedules_id', $id)
+            ->where('id', $id)
             ->first();
 
         DB::beginTransaction();

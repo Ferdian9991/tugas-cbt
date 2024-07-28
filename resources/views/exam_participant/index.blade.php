@@ -2,6 +2,10 @@
 
 @section('title', $exam->name)
 
+@php
+    use Carbon\Carbon;
+@endphp
+
 @section('content')
     <div class="main-content">
         <div class="row">
@@ -16,6 +20,9 @@
                     </form>
                 </div>
                 <div class="col-9 d-flex justify-content-end p-0">
+                    <div class="me-3">
+                        <a href="{{ route('exams.index') }}" class="btn btn-light float-right">Kembali</a>
+                    </div>
                     <div>
                         <a href="{{ route('exam_participants.create', [$exam->id]) }}"
                             class="btn btn-primary float-right">Tambah Data</a>
@@ -38,33 +45,41 @@
                     <table class="table table-bordered table-md">
                         <thead>
                             <tr>
+                                <th>Kode Peserta</th>
                                 <th>Nama Peserta</th>
                                 <th>Email Peserta</th>
-                                <th>Terakhir Diubah</th>
-                                <th>Dibuat Oleh</th>
-                                <th style="width: 14%">Aksi</th>
+                                <th>Nilai</th>
+                                <th>Dikerjakan Pada</th>
+                                <th>Diselesaikan Pada</th>
+                                <th style="width: 5%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($participants as $participant)
                                 @php
+                                    $participantInfo = $participant;
                                     $participant = $participant->user;
                                 @endphp
                                 <tr>
+                                    <td>{{ $participant->participant_number }}</td>
                                     <td>{{ $participant->name }}</td>
                                     <td>{{ $participant->email }}</td>
                                     <td>
-                                        {{ $participant->updated_at->format('d M Y') }}
+                                        {{ $participantInfo->score ?? '-' }}
                                     </td>
                                     <td>
-                                        {{ $participant->createdBy?->name }}
+                                        {{ $participantInfo->started_at ? Carbon::parse($participantInfo->started_at)->format('d-m-Y H:i:s') : '-' }}
                                     </td>
                                     <td>
-                                        <form action="{{ route('exam_participants.destroy', [$exam->id, $participant->id]) }}"
+                                        {{ $participantInfo->finished_at ? Carbon::parse($participantInfo->finished_at)->format('d-m-Y H:i:s') : '-' }}
+                                    </td>
+                                    <td>
+                                        <form
+                                            action="{{ route('exam_participants.destroy', [$exam->id, $participant->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-danger"
+                                            <button class="btn btn-danger" @disabled($participantInfo->is_finished)
                                                 onclick="return confirm('Apakah Anda yakin ingin menghapus data {{ $participant->name }}?')">
                                                 <span class="far fa-trash-alt"></span>
                                             </button>

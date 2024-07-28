@@ -2,6 +2,10 @@
 
 @section('title', 'Jadwal Ujian')
 
+@php
+    use Carbon\Carbon;
+@endphp
+
 @section('content')
     <div class="main-content">
         <div class="row">
@@ -39,8 +43,8 @@
                             <tr>
                                 <th>Kode Ujian</th>
                                 <th>Nama Ujian</th>
-                                <th>Terakhir Diubah</th>
-                                <th>Dibuat Oleh</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Tanggal Selesai</th>
                                 <th style="width: 20%">Aksi</th>
                             </tr>
                         </thead>
@@ -50,10 +54,10 @@
                                     <td>{{ $exam->code }}</td>
                                     <td>{{ $exam->name }}</td>
                                     <td>
-                                        {{ $exam->updated_at->format('d M Y') }}
+                                        {{ Carbon::parse($exam->start_date)->format('d M Y') }}
                                     </td>
                                     <td>
-                                        {{ $exam->createdBy?->name }}
+                                        {{ Carbon::parse($exam->end_date)->format('d M Y') }}
                                     </td>
                                     <td>
                                         <button class="btn btn-light"

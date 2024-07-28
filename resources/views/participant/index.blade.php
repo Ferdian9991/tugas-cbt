@@ -37,6 +37,7 @@
                     <table class="table table-bordered table-md">
                         <thead>
                             <tr>
+                                <th>Kode Peserta</th>
                                 <th>Nama Peserta</th>
                                 <th>Email Peserta</th>
                                 <th>Terakhir Diubah</th>
@@ -47,6 +48,7 @@
                         <tbody>
                             @foreach ($participants as $participant)
                                 <tr>
+                                    <td>{{ $participant->participant_number }}</td>
                                     <td>{{ $participant->name }}</td>
                                     <td>{{ $participant->email }}</td>
                                     <td>
@@ -56,12 +58,12 @@
                                         {{ $participant->createdBy?->name }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('participants.edit', [$participant->id]) }}" class="btn btn-warning"><span
-                                                class="far fa-edit"></span>
+                                        <a href="{{ route('participants.edit', [$participant->id]) }}"
+                                            class="btn btn-warning"><span class="far fa-edit"></span>
                                         </a>
 
-                                        <form action="{{ route('participants.destroy', [$participant->id]) }}" method="POST"
-                                            class="d-inline">
+                                        <form action="{{ route('participants.destroy', [$participant->id]) }}"
+                                            method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger"

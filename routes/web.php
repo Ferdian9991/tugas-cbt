@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 
 Route::get('/', function () {
     if (auth()->check()) {
-        return redirect()->route('packages.index');
+        return redirect()->route(auth()->user()->role === User::ROLE_ADMIN ? 'packages.index' : 'exam-front.index');
     } else {
         return redirect()->route('login');
     }
