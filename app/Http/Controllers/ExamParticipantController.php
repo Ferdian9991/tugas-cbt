@@ -53,6 +53,15 @@ class ExamParticipantController extends Controller
      */
     public function store(Request $request, string $examId)
     {
+        // get exam quota
+        $exam = ExamSchedule::findOrFail((int) $examId);
+        $participantCount = ExamParticipant::where('exam_schedules_id', $exam->id)->count();
+
+        if ($participantCount >= $exam->quota) {
+            return redirect()->route('exam_participants.create', [$examId])
+                ->with('error', 'Kuota peserta sudah penuh');
+        }
+
         $request->validate([
             'user_id' => 'required|numeric',
         ]);

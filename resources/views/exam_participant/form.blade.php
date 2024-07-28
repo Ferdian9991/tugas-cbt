@@ -10,6 +10,19 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h4 class="mb-3">Tambah Peserta</h4>
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible show fade mb-4">
+                        <div class="alert-body d-flex justify-content-between p-0 align-items-center">
+                            {{ session('error') }}
+                            <button style="background: none; border:none; color:white; font-size: 18px" class="close"
+                                data-dismiss="alert">
+                                <span>×</span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('exam_participants.store', [$examId]) }}">
                     @csrf
 
