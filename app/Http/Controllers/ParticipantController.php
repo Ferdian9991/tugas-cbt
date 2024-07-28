@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ParticipantController extends Controller
@@ -31,7 +32,7 @@ class ParticipantController extends Controller
      */
     public function create()
     {
-        //
+        return view('participant.form');
     }
 
     /**
@@ -39,7 +40,22 @@ class ParticipantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'participant_number' => 'string|max:25',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'phone' => 'required|string|max:15',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $data['password'] = bcrypt($data['participant_number']);
+        if (empty($data['participant_number'])) {
+            $data['participant_number'] = Str::password(10, true, true, false, false);
+        }
+
+        User::create($data);
+
+        return redirect()->route('participants.index')->with('success', 'Berhasil menambahkan data peserta.');
     }
 
     /**
@@ -55,7 +71,9 @@ class ParticipantController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $participant = User::findOrFail($id);
+
+        return view('participant.form')->with('participant', $participant);
     }
 
     /**
@@ -63,7 +81,19 @@ class ParticipantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $participant = User::findOrFail($id);
+
+        $data = $request->validate([
+            'participant_number' => 'string|max:25',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $participant->id,
+            'phone' => 'required|string|max:15',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $participant->update($data);
+
+        return redirect()->route('participants.index')->with('success', 'Berhasil memperbarui data peserta.');
     }
 
     /**
@@ -71,6 +101,9 @@ class ParticipantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $participant = User::findOrFail($id);
+        $participant->delete();
+
+        return redirect()->route('participants.index')->with('success', 'Berhasil menghapus data peserta.');
     }
 }

@@ -44,7 +44,18 @@ class ExamScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        ExamSchedule::create($request->all());
+        $data = $request->validate([
+            'code' => 'required|string|max:25',
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'duration' => 'required|integer',
+            'quota' => 'required|integer',
+            'package_id' => 'required|exists:packages,id',
+            'is_active' => 'required|boolean',
+        ]);
+
+        ExamSchedule::create($data);
 
         return redirect()->route('exams.index')->with('success', 'Berhasil menambahkan data jadwal ujian.');
     }
@@ -72,7 +83,18 @@ class ExamScheduleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        ExamSchedule::findOrFail($id)->update($request->all());
+        $data = $request->validate([
+            'code' => 'required|string|max:25',
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'duration' => 'required|integer',
+            'quota' => 'required|integer',
+            'package_id' => 'required|exists:packages,id',
+            'is_active' => 'required|boolean',
+        ]);
+
+        ExamSchedule::findOrFail($id)->update($data);
 
         return redirect()->route('exams.index')->with('success', 'Berhasil memperbarui data jadwal ujian.');
     }

@@ -42,7 +42,15 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        Package::create($request->all());
+        $data = $request->validate([
+            'code' => 'required|string|max:25',
+            'name' => 'required|string|max:255',
+            'is_random_question' => 'required|boolean',
+            'is_random_choice' => 'required|boolean',
+            'is_active' => 'required|boolean',
+        ]);
+
+        Package::create($data);
 
         return redirect()->route('packages.index')->with('success', 'Berhasil menambahkan data paket soal.');
     }
@@ -71,7 +79,16 @@ class PackageController extends Controller
     public function update(Request $request, string $id)
     {
         $package = Package::findOrFail($id);
-        $package->update($request->all());
+
+        $data = $request->validate([
+            'code' => 'required|string|max:25',
+            'name' => 'required|string|max:255',
+            'is_random_question' => 'required|boolean',
+            'is_random_choice' => 'required|boolean',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $package->update($data);
 
         return redirect()->route('packages.index')->with('success', 'Berhasil memperbarui data paket soal.');
     }
