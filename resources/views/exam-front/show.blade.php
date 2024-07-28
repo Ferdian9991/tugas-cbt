@@ -73,7 +73,7 @@
                     <p class="time"></p>
                 </div>
 
-                <form action="{{ route('exam-front.submit', [$exam->exam_schedules_id]) }}" method="POST">
+                <form id="q-submit" action="{{ route('exam-front.submit', [$exam->exam_schedules_id]) }}" method="POST">
                     @csrf
                     <button class="submit-button" onclick="return confirm('Apakah Anda yakin ingin mengumpulkan jawaban?')"
                         type="submit">Kumpulkan Jawaban</button>
@@ -132,6 +132,14 @@
                 } else {
                     clearInterval(timerInterval);
                     alert("Waktu ujian telah habis!");
+
+                    const form = document.getElementById('q-submit');
+
+                    if (form) {
+                        form.submit();
+
+                        return;
+                    }
                 }
             }
 

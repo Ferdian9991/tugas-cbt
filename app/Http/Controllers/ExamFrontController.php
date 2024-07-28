@@ -138,6 +138,27 @@ class ExamFrontController extends Controller
             ], 403);
         }
 
+        $examInfo = $exam->examSchedule;
+
+        $examDuration = $examInfo->duration;
+        $examStartedAt = Carbon::parse($exam->started_at);
+
+        $examEndAt = $examStartedAt->copy()->addMinutes($examDuration);
+
+        $currentTime = Carbon::now();
+
+        if ($currentTime->greaterThan($examEndAt)) {
+            $availableTime = 0;
+        } else {
+            $availableTime = $currentTime->diffInMinutes($examEndAt);
+        }
+
+        if ($availableTime <= 0) {
+            return response()->json([
+                'message' => 'Waktu ujian sudah habis'
+            ], 403);
+        }
+
         try {
             $data = $request->validate([
                 'question_id' => 'required|exists:package_questions,id',
