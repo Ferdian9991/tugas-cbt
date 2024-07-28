@@ -51,4 +51,7 @@ Route::middleware(['auth', 'peserta'])->group(function () {
 
     Route::post('/exam-front/{id}/submit', [App\Http\Controllers\ExamFrontController::class, 'submitExam'])
         ->name('exam-front.submit');
+
+    Route::get('/exam-front/{id}/thanks', [App\Http\Controllers\ExamFrontController::class, 'thanks'])
+        ->name('exam-front.thanks');
 });

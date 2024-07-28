@@ -73,7 +73,7 @@
                     <p class="time"></p>
                 </div>
 
-                <form action="{{ route('exam-front.submit', [$exam->id]) }}" method="POST">
+                <form action="{{ route('exam-front.submit', [$exam->exam_schedules_id]) }}" method="POST">
                     @csrf
                     <button class="submit-button" onclick="return confirm('Apakah Anda yakin ingin mengumpulkan jawaban?')"
                         type="submit">Kumpulkan Jawaban</button>

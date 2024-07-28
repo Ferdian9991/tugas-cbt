@@ -162,8 +162,16 @@ class ExamFrontController extends Controller
     public function submitExam(Request $request, string $id)
     {
         $exam = ExamParticipant::where('user_id', auth()->user()->id)
-            ->where('id', $id)
+            ->where('exam_schedules_id', $id)
             ->first();
+
+        if (!$exam) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak ditemukan');
+        }
+
+        if ($exam->is_finished) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian sudah selesai');
+        }
 
         DB::beginTransaction();
 
@@ -188,6 +196,23 @@ class ExamFrontController extends Controller
 
         DB::commit();
 
-        return redirect()->route('exam-front.index')->with('success', 'Ujian berhasil disubmit');
+        return redirect()->route('exam-front.thanks', [$id]);
+    }
+
+    public function thanks(string $id)
+    {
+        $exam = ExamParticipant::where('user_id', auth()->user()->id)
+            ->where('exam_schedules_id', $id)
+            ->first();
+
+        if (!$exam) {
+            abort(404);
+        }
+
+        if (!$exam->is_finished) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian belum selesai');
+        }
+
+        return view('exam-front.thanks');
     }
 }
