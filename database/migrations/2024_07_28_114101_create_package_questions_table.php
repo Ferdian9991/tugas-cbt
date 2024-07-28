@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('number');
             $table->string('header')->nullable();
             $table->text('text')->nullable();
+            $table->json('choices')->nullable();
 
             $table->log(withSoftdelete: true, withUserLog: true);
         });

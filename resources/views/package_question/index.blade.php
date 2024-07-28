@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-12 row mb-5">
                 <div class="col-3">
-                    <form action="{{ route('packages.index') }}" method="GET">
+                    <form action="{{ route('questions.index', [$package->id]) }}" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Cari pertanyaan">
                             <button class="btn btn-primary" type="submit">Cari</button>
