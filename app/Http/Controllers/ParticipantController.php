@@ -71,7 +71,7 @@ class ParticipantController extends Controller
      */
     public function edit(string $id)
     {
-        $participant = User::findOrFail($id);
+        $participant = User::findOrFail((int)$id);
 
         return view('participant.form')->with('participant', $participant);
     }
@@ -81,7 +81,7 @@ class ParticipantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $participant = User::findOrFail($id);
+        $participant = User::findOrFail((int)$id);
 
         $data = $request->validate([
             'participant_number' => 'string|max:25',
@@ -101,7 +101,7 @@ class ParticipantController extends Controller
      */
     public function destroy(string $id)
     {
-        $participant = User::findOrFail($id);
+        $participant = User::findOrFail((int)$id);
         $participant->delete();
 
         return redirect()->route('participants.index')->with('success', 'Berhasil menghapus data peserta.');

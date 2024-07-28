@@ -68,7 +68,7 @@ class PackageController extends Controller
      */
     public function edit(string $id)
     {
-        $package = Package::findOrFail($id);
+        $package = Package::findOrFail((int) $id);
 
         return view('package.form')->with('package', $package);
     }
@@ -78,7 +78,7 @@ class PackageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $package = Package::findOrFail($id);
+        $package = Package::findOrFail((int) $id);
 
         $data = $request->validate([
             'code' => 'required|string|max:25',
@@ -98,7 +98,7 @@ class PackageController extends Controller
      */
     public function destroy(string $id)
     {
-        $package = Package::findOrFail($id);
+        $package = Package::findOrFail((int) $id);
         $package->delete();
 
         return redirect()->route('packages.index')->with('success', 'Berhasil menghapus data paket soal.');

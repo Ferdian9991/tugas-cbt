@@ -67,7 +67,7 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        $admin = User::findOrFail($id);
+        $admin = User::findOrFail((int) $id);
 
         return view('admin.form')->with('admin', $admin);
     }
@@ -84,7 +84,7 @@ class AdminController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        $admin = User::findOrFail($id);
+        $admin = User::findOrFail((int) $id);
         $admin->update($data);
 
         return redirect()->route('admins.index')->with('success', 'Berhasil mengubah data admin.');
@@ -95,7 +95,7 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        $admin = User::findOrFail($id);
+        $admin = User::findOrFail((int) $id);
         $admin->delete();
 
         return redirect()->route('admins.index')->with('success', 'Berhasil menghapus data admin.');
