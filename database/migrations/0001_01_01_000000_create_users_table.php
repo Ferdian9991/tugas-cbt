@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone', 15)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role')->default('admin')->comment('admin, user');
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             
             $table->log(withSoftdelete: true, withUserLog: true);

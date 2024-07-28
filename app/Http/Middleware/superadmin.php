@@ -16,7 +16,12 @@ class superadmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role== 'admin') {
+        $auth = Auth::user();
+        if (!empty($auth) && !$auth?->is_active) {
+            abort(403, 'Akun Anda Belum Aktif!');
+        }
+
+        if ($auth?->role === 'admin') {
             return $next($request);
         }
 
