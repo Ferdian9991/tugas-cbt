@@ -46,8 +46,7 @@
                                 <div class="col-12">
                                     <input id="header" type="text"
                                         class="form-control @error('header') is-invalid @enderror" name="header"
-                                        value="{{ old('header', $question?->header) }}" required autocomplete="header"
-                                        autofocus>
+                                        value="{{ old('header', $question?->header) }}" autocomplete="header" autofocus>
 
                                     @error('header')
                                         <span class="invalid-feedback" role="alert">

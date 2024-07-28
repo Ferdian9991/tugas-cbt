@@ -44,7 +44,7 @@ class PackageQuestionController extends Controller
     public function store(Request $request, string $packageId)
     {
         $data = $request->validate([
-            'header' => 'required|string',
+            'header' => 'nullable|string',
             'question' => 'required|string',
             'number' => 'required|integer|unique:package_questions,number,NULL,id,package_id,' . $packageId,
             'correct_choice' => 'required|string|in:A,B,C,D,E',
@@ -97,7 +97,7 @@ class PackageQuestionController extends Controller
     public function update(Request $request, string $packageId, string $id)
     {
         $data = $request->validate([
-            'header' => 'required|string',
+            'header' => 'nullable|string',
             'question' => 'required|string',
             'number' => 'required|integer|unique:package_questions,number,' . $id . ',id,package_id,' . $packageId,
             'correct_choice' => 'required|string|in:A,B,C,D,E',
