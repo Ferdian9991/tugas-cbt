@@ -27,4 +27,9 @@ class ExamSchedule extends Model
         'package_id',
         'is_active',
     ];
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
+    }
 }

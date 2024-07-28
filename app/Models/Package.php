@@ -24,4 +24,9 @@ class Package extends Model
         'is_random_choice',
         'is_active',
     ];
+
+    public function questions()
+    {
+        return $this->hasMany(PackageQuestion::class);
+    }
 }

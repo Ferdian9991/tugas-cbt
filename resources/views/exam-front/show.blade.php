@@ -18,45 +18,78 @@
         </header>
         <main class="main-content">
             <div class="question-container">
-                <div class="question">
-                    <p>1. Manakah yang termasuk hari kemerdekaan Indonesia?</p>
-                    <label><input type="radio" name="q1"> 17 Agustus 1922</label>
-                    <label><input type="radio" name="q1"> 19 Agustus 1922</label>
-                    <label><input type="radio" name="q1"> 17 Agustus 1945</label>
-                </div>
-                <div class="question">
-                    <p>2. Manakah yang termasuk buah-buahan?</p>
-                    <label><input type="radio" name="q2"> Apel</label>
-                    <label><input type="radio" name="q2"> Kucing</label>
-                    <label><input type="radio" name="q2"> Hantu</label>
-                </div>
-                <div class="question">
-                    <p>3. Pilihlah kotak yang bentuknya mirip dengan kotak yang dibentuk dari lembaran kertas yang diberikan
-                    </p>
-                    <img src="image.png" alt="shape question">
-                    <label><input type="radio" name="q3"> 1, 2 and 3</label>
-                    <label><input type="radio" name="q3"> 1, 3 and 4</label>
-                    <label><input type="radio" name="q3"> 2 and 3</label>
-                </div>
-                <div class="question">
-                    <p>4. Apa alat yang digunakan untuk mendesain aplikasi?</p>
-                    <label><input type="radio" name="q4"> Figma</label>
-                    <label><input type="radio" name="q4"> Filmora</label>
-                    <label><input type="radio" name="q4"> Adobe Audition</label>
-                </div>
+                @foreach ($questions as $question)
+                    @php
+                        $choices = json_decode($question->choices ?? '[]');
+                    @endphp
+                    <div class="question">
+                        <div class="d-flex">
+                            <p style="margin-right: 8px; font-weight: bold">{{ $question->number }}. </p>
+                            <div class="question-text">
+                                @if (!empty($question->header))
+                                    <p style="font-weight: bold">{{ $question->header }}</p>
+                                @endif
+
+                                @if (!empty($question->text))
+                                    <p>{{ $question->text }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        @foreach ($choices as $choice)
+                            <label>
+                                <input class="answer" value="{{ $choice?->number }}" type="radio"
+                                    name="q_num_{{ $question->number }}">
+                                {{ $choice?->text }}
+                            </label>
+                        @endforeach
+                    </div>
+                @endforeach
             </div>
             <aside class="sidebar">
                 <div class="user-info">
                     <img src="{{ asset('img/avatar/avatar-1.png') }}" alt="user avatar">
-                    <p>Aditya Chandra</p>
-                    <p>22033771211</p>
+                    <p>{{ auth()->user()->name }}</p>
+                    <p>{{ auth()->user()?->participant_number }}</p>
                 </div>
                 <div class="timer">
                     <p>Durasi Ujian</p>
-                    <p class="time">00:10:19</p>
+                    <p class="time"></p>
                 </div>
                 <button class="submit-button">Kumpulkan Jawaban</button>
             </aside>
         </main>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            startTimer();
+        });
+
+        const startTimer = () => {
+            const timerElement = document.querySelector('.time');
+            let timeInSeconds = Math.floor('{{ $availableTime }}' * 60);
+
+            function formatTime(seconds) {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const remainingSeconds = seconds % 60;
+                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            }
+
+            function updateTimer() {
+                if (timeInSeconds > 0) {
+                    timeInSeconds--;
+                    timerElement.textContent = formatTime(timeInSeconds);
+                } else {
+                    clearInterval(timerInterval);
+                    alert("Waktu ujian telah habis!");
+                }
+            }
+
+            const timerInterval = setInterval(updateTimer, 1000);
+            timerElement.textContent = formatTime(timeInSeconds);
+        }
+    </script>
+@endpush

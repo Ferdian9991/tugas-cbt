@@ -28,6 +28,19 @@
                         </div>
                     </div>
                 @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        <div class="alert-body d-flex justify-content-between p-0 align-items-center">
+                            {{ session('error') }}
+                            <button style="background: none; border:none; color:white; font-size: 18px" class="close"
+                                data-dismiss="alert">
+                                <span>×</span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-md">
                         <thead>
@@ -55,10 +68,11 @@
                                         {{ $exam->createdBy?->name }}
                                     </td>
                                     <td>
-                                        <form action="{{ route('exams.destroy', [$exam->id]) }}" method="POST"
+                                        <form action="{{ route('exam-front.update', [$exam->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf
-                                            @method('DELETE')
+                                            @method('PUT')
+
                                             @php
                                                 $variant = 'primary';
                                                 $text = 'Kerjakan Ujian';

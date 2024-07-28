@@ -20,6 +20,11 @@ class ExamParticipant extends Model
     protected $fillable = [
         'exam_schedules_id',
         'user_id',
+        'is_started',
+        'is_finished',
+        'score',
+        'started_at',
+        'finished_at',
     ];
 
     public function user()
