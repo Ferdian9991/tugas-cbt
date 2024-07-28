@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', @empty($exam) ? 'Tambah Jadwal Ujian' : 'Edit Jadwal Ujian')
+@section('title', $examInfo->name)
 @push('php')
     @php
         $isBlank = true;
