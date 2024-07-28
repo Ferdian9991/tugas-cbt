@@ -39,3 +39,5 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::put('/hakakses/update/{id}', [App\Http\Controllers\HakaksesController::class, 'update'])->name('hakakses.update')->middleware('superadmin');
     Route::delete('/hakakses/delete/{id}', [App\Http\Controllers\HakaksesController::class, 'destroy'])->name('hakakses.delete')->middleware('superadmin');
 });
+
+Route::get('exam-front', [App\Http\Controllers\ExamFrontController::class, 'index'])->name('exam-front.index');

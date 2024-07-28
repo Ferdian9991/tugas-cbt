@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    @stack('php')
 
     <head>
         <meta charset="utf-8">
@@ -20,17 +21,20 @@
         <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
         <!-- Scripts -->
-        <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) -->
+        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+        @stack('head')
     </head>
 
     <body>
         <div id="app">
             <div class="main-wrapper">
-                <!-- Header -->
-                @include('components.header')
+                @if (!($isBlank ?? false))
+                    <!-- Header -->
+                    @include('components.header')
 
-                <!-- Sidebar -->
-                @include('components.sidebar')
+                    <!-- Sidebar -->
+                    @include('components.sidebar')
+                @endif
 
                 <!-- Content -->
                 @yield('content')
