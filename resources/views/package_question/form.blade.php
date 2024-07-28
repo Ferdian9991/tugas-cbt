@@ -1,5 +1,6 @@
 @php
     $question ??= null;
+    $options = ['A', 'B', 'C', 'D', 'E'];
 @endphp
 @extends('layouts.app')
 
@@ -82,14 +83,10 @@
                         </div>
 
                         <div class="card-body">
-                            @php
-                                $options = ['A', 'B', 'C', 'D', 'E'];
-                            @endphp
-
                             @foreach ($options as $option)
                                 @php
                                     $key = 'option_' . strtolower($option);
-                                    $choices = $question?->choices ?? [];
+                                    $choices = $question?->choices ?? '[]';
                                     $choices = json_decode($choices, true);
                                     $choicesColumn = array_column($choices, 'number');
                                     // to lower case
@@ -121,6 +118,36 @@
                                     </div>
                                 </div>
                             @endforeach
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            Pilih Jawaban Benar
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group
+                                row">
+                                <div class="col-12">
+                                    <select name="correct_choice" id="correct_choice"
+                                        class="form-control @error('correct_choice') is-invalid @enderror">
+                                        <option value="">Silakan pilih terlebih dahulu</option>
+                                        @foreach ($options as $option)
+                                            <option value="{{ $option }}"
+                                                {{ old('correct_choice', $question?->correct_choice) == $option ? 'selected' : '' }}>
+                                                {{ $option }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('correct_choice')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
 

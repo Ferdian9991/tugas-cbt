@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('header')->nullable();
             $table->text('text')->nullable();
             $table->jsonb('choices')->nullable();
+            $table->char('correct_choice', 1)->nullable();
 
             $table->log(withSoftdelete: true, withUserLog: true);
         });

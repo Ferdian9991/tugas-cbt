@@ -23,6 +23,7 @@ class PackageQuestion extends Model
         'header',
         'text',
         'choices',
+        'correct_choice',
     ];
 
     /**

@@ -47,6 +47,7 @@ class PackageQuestionController extends Controller
             'header' => 'required|string',
             'question' => 'required|string',
             'number' => 'required|integer|unique:package_questions,number,NULL,id,package_id,' . $packageId,
+            'correct_choice' => 'required|string|in:A,B,C,D,E',
         ]);
 
         $choices = $request->only([
@@ -99,6 +100,7 @@ class PackageQuestionController extends Controller
             'header' => 'required|string',
             'question' => 'required|string',
             'number' => 'required|integer|unique:package_questions,number,' . $id . ',id,package_id,' . $packageId,
+            'correct_choice' => 'required|string|in:A,B,C,D,E',
         ]);
 
         $choices = $request->only([
