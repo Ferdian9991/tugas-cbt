@@ -40,4 +40,8 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::delete('/hakakses/delete/{id}', [App\Http\Controllers\HakaksesController::class, 'destroy'])->name('hakakses.delete')->middleware('superadmin');
 });
 
-Route::get('exam-front', [App\Http\Controllers\ExamFrontController::class, 'index'])->name('exam-front.index');
+Route::middleware(['auth', 'peserta'])->group(function () {
+    Route::resource('exam-front', App\Http\Controllers\ExamFrontController::class, [
+        'only' => ['index', 'show'],
+    ]);
+});

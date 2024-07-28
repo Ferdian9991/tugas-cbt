@@ -26,4 +26,9 @@ class ExamParticipant extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function examSchedule()
+    {
+        return $this->belongsTo(ExamSchedule::class, 'exam_schedules_id');
+    }
 }
