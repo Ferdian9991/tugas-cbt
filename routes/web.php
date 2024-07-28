@@ -17,6 +17,15 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::resource('packages', App\Http\Controllers\PackageController::class);
     Route::resource('packages/{id}/questions', App\Http\Controllers\PackageQuestionController::class);
     Route::resource('exams', App\Http\Controllers\ExamScheduleController::class);
+    Route::resource('exams/{id}/participants', App\Http\Controllers\ExamParticipantController::class, [
+        'names' => [
+            'index' => 'exam_participants.index',
+            'create' => 'exam_participants.create',
+            'store' => 'exam_participants.store',
+            'destroy' => 'exam_participants.destroy',
+        ],
+        'only' => ['index', 'store', 'destroy', 'create'],
+    ]);
     Route::resource('participants', App\Http\Controllers\ParticipantController::class);
     Route::resource('admins', App\Http\Controllers\AdminController::class);
 

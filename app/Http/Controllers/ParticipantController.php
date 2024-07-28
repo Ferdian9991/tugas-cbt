@@ -49,6 +49,7 @@ class ParticipantController extends Controller
         ]);
 
         $data['password'] = bcrypt($data['participant_number']);
+        $data['role'] = User::ROLE_USER;
         if (empty($data['participant_number'])) {
             $data['participant_number'] = Str::password(10, true, true, false, false);
         }
