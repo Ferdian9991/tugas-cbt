@@ -14,11 +14,22 @@
                 </div>
                 <div class="col-9 d-flex justify-content-end p-0">
                     <div>
-                        <a class="btn btn-primary float-right">Tambah Data</a>
+                        <a href="{{ route('packages.create') }}" class="btn btn-primary float-right">Tambah Data</a>
                     </div>
                 </div>
             </div>
             <div class="col-12">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body d-flex justify-content-between p-0 align-items-center">
+                            {{ session('success') }}
+                            <button style="background: none; border:none; color:white; font-size: 18px" class="close"
+                                data-dismiss="alert">
+                                <span>×</span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered table-md">
                         <thead>
@@ -31,8 +42,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                @foreach ($packages as $package)
+                            @foreach ($packages as $package)
+                                <tr>
                                     <td>{{ $package->code }}</td>
                                     <td>{{ $package->name }}</td>
                                     <td>
@@ -42,10 +53,22 @@
                                         {{ $package->createdBy?->name }}
                                     </td>
                                     <td>
-                                        <a class="btn btn-warning"><span class="far fa-edit"></span></a>
+                                        <a href="{{ route('packages.edit', [$package->id]) }}" class="btn btn-warning"><span
+                                                class="far fa-edit"></span>
+                                        </a>
+
+                                        <form action="{{ route('packages.destroy', [$package->id]) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data {{ $package->name }}?')">
+                                                <span class="far fa-trash-alt"></span>
+                                            </button>
+                                        </form>
                                     </td>
-                                @endforeach
-                            </tr>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -8,7 +8,7 @@
                 <a href="">Menu Utama</a>
             </div> --}}
             <ul class="sidebar-menu">
-                <li class="{{ Request::is('packages') ? 'active' : '' }}">
+                <li class="{{ Request::is('packages*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('packages') }}"><i class="fas fa-list"></i><span>Paket Soal</span></a>
                 </li>
                 <!-- profile ganti password -->

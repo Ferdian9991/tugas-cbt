@@ -34,7 +34,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        return view('package.form');
     }
 
     /**
@@ -42,7 +42,9 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Package::create($request->all());
+
+        return redirect()->route('packages.index')->with('success', 'Berhasil menambahkan data paket soal.');
     }
 
     /**
@@ -58,7 +60,9 @@ class PackageController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $package = Package::findOrFail($id);
+
+        return view('package.form')->with('package', $package);
     }
 
     /**
@@ -66,7 +70,10 @@ class PackageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $package = Package::findOrFail($id);
+        $package->update($request->all());
+
+        return redirect()->route('packages.index')->with('success', 'Berhasil memperbarui data paket soal.');
     }
 
     /**
@@ -74,6 +81,9 @@ class PackageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $package = Package::findOrFail($id);
+        $package->delete();
+
+        return redirect()->route('packages.index')->with('success', 'Berhasil menghapus data paket soal.');
     }
 }

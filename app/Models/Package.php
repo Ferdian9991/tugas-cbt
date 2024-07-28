@@ -20,8 +20,6 @@ class Package extends Model
     protected $fillable = [
         'code',
         'name',
-        'description',
-        'tnc',
         'is_random_question',
         'is_random_choice',
         'is_active',
