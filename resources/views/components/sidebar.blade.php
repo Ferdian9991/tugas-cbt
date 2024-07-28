@@ -20,6 +20,10 @@
                     <a class="nav-link" href="{{ url('participants') }}"><i class="fas fa-users"></i><span>Peserta Ujian</span></a>
                 </li>
 
+                <li class="{{ Request::is('admins*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('admins') }}"><i class="fas fa-user-shield"></i><span>Admin Aplikasi</span></a>
+                </li>
+
                 <!-- profile ganti password -->
                 <li class="menu-header">Profile</li>
                 <li class="{{ Request::is('profile/edit') ? 'active' : '' }}">

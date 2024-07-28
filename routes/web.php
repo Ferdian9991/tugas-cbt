@@ -17,6 +17,7 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::resource('packages', App\Http\Controllers\PackageController::class);
     Route::resource('exams', App\Http\Controllers\ExamScheduleController::class);
     Route::resource('participants', App\Http\Controllers\ParticipantController::class);
+    Route::resource('admins', App\Http\Controllers\AdminController::class);
 
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
