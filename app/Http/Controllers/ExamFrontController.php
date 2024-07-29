@@ -51,6 +51,10 @@ class ExamFrontController extends Controller
 
         $examInfo = $exam->examSchedule;
 
+        if (!$examInfo->is_active) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak aktif');
+        }
+
         if ($examInfo->start_date > now()) {
             return redirect()->route('exam-front.index')->with('error', 'Ujian belum dimulai');
         }
@@ -106,6 +110,12 @@ class ExamFrontController extends Controller
             return redirect()->route('exam-front.index')->with('error', 'Ujian tidak ditemukan');
         }
 
+        $examInfo = $exam->examSchedule;
+
+        if (!$examInfo->is_active) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak aktif');
+        }
+
         if ($exam->is_finished) {
             return redirect()->route('exam-front.index')->with('error', 'Ujian sudah selesai');
         }
@@ -139,6 +149,10 @@ class ExamFrontController extends Controller
         }
 
         $examInfo = $exam->examSchedule;
+
+        if (!$examInfo->is_active) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak aktif');
+        }
 
         $examDuration = $examInfo->duration;
         $examStartedAt = Carbon::parse($exam->started_at);
@@ -190,6 +204,11 @@ class ExamFrontController extends Controller
             return redirect()->route('exam-front.index')->with('error', 'Ujian tidak ditemukan');
         }
 
+        $examInfo = $exam->examSchedule;
+        if (!$examInfo->is_active) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak aktif');
+        }
+
         if ($exam->is_finished) {
             return redirect()->route('exam-front.index')->with('error', 'Ujian sudah selesai');
         }
@@ -228,6 +247,11 @@ class ExamFrontController extends Controller
 
         if (!$exam) {
             abort(404);
+        }
+
+        $examInfo = $exam->examSchedule;
+        if (!$examInfo->is_active) {
+            return redirect()->route('exam-front.index')->with('error', 'Ujian tidak aktif');
         }
 
         if (!$exam->is_finished) {
